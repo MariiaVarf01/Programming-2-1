@@ -54,7 +54,7 @@ public class Main {
 
     // Function returns the HashMap consists of words and their frequency
     public static HashMap<String, Integer> wordsFrequencyHashMap (String text) {
-        String[] lowerCaseText = text.split("[,;\\-+\\s]+");
+        String[] lowerCaseText = text.split("[^\\w'-]+");
         HashMap<String, Integer> wordsFrequencyMap = new HashMap<String, Integer>();
 
         for (int i = 0; i < lowerCaseText.length; i++) {
@@ -89,14 +89,10 @@ public class Main {
     // Function returns the number of words that are unique in the text or 0
     public static Integer findNumberOfUniqueWords (String text) {
         HashMap <String, Integer> wordIntegerHashMap = wordsFrequencyHashMap(text);
-        ArrayList<String> uniqueWords = new ArrayList<String>();
 
-        for (String word: wordIntegerHashMap.keySet()) {
-            if (wordIntegerHashMap.get(word) == 1) {
-                uniqueWords.add(word);
-            }
-        }
-        return uniqueWords.size();
+        return (int) wordIntegerHashMap.entrySet().stream()
+                .filter(entry -> entry.getValue() == 1)
+                .count();
     }
 
     // Function prints a message and gets text from user and returns it
@@ -106,7 +102,7 @@ public class Main {
 
         if (text.isEmpty()) {
             System.out.println("Incorrect input, please try again.");
-            getString(msg, sc);
+            return getString(msg, sc); // Return the corrected input
         }
 
         return text;
@@ -119,7 +115,7 @@ public class Main {
 
         if (text.length() != 1) {
             System.out.println("Incorrect input, please try again.");
-            getString(msg, sc);
+            return getChar(msg, sc);
         }
 
         return text.charAt(0);
@@ -150,6 +146,4 @@ public class Main {
             sc.close();
         }
     }
-
-
 }
